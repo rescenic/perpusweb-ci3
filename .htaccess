@@ -1,8 +1,54 @@
-<IfModule mod_rewrite.c>
-Options  -Multiviews
+Options +FollowSymLinks +MultiViews -Indexes
 
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /perpusweb/index.php/$1 [L]
+RewriteRule ^(.*)$ index.php/$1 [L]
+
+<IfModule mod_php7.c>
+  # PHP error handling for production servers
+  # Disable display of startup errors
+  php_flag display_startup_errors off
+
+  # Disable display of all other errors
+  php_flag display_errors off
+
+  # Disable HTML markup of errors
+  php_flag html_errors off
+
+  # Enable logging of errors
+  php_flag log_errors on
+
+  # Disable ignoring of repeat errors
+  php_flag ignore_repeated_errors off
+
+  # Disable ignoring of unique source errors
+  php_flag ignore_repeated_source off
+
+  # Enable logging of PHP memory leaks
+  php_flag report_memleaks on
+
+  # Preserve most recent error via php_errormsg
+  php_flag track_errors on
+
+  # Disable formatting of error reference links
+  php_value docref_root 0
+
+  # Disable formatting of error reference links
+  php_value docref_ext 0
+
+  # Specify path to PHP error log
+  php_value error_log /home/u1595522/public_html/php_errors.log
+
+  # Specify recording of all PHP errors
+  # [see footnote 3] # php_value error_reporting 999999999
+  php_value error_reporting -1
+
+  # Disable max error string length
+  php_value log_errors_max_len 0
 </IfModule>
+
+<FilesMatch "\.(htaccess|htpasswd|php_errors\.log)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
